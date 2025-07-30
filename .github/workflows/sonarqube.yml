@@ -28,9 +28,16 @@ jobs:
         run: |
           pytest --cov=Deployment --cov-report=xml --cov-report=term
 
-      - name: SonarCloud Scan
+        - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=Group6
+            -Dsonar.organization=Steve8695
+            -Dsonar.sources=Deployment
+            -Dsonar.exclusions=**/__pycache__/**
+            -Dsonar.python.coverage.reportPaths=coverage.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
