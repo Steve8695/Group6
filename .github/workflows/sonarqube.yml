@@ -34,7 +34,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.projectKey=Group6
-            -Dsonar.organization=Steve8695
+            -Dsonar.organization=steve8695
             -Dsonar.sources=Deployment
             -Dsonar.exclusions=**/__pycache__/**
             -Dsonar.python.coverage.reportPaths=coverage.xml
