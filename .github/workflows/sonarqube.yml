@@ -37,6 +37,6 @@ jobs:
             -Dsonar.organization=Steve8695 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=Deployment \
-            -Dsonar.inclusions=Deployment/sample.py \
+            -Dsonar.inclusions=Deployment/test_sample.py \
             -Dsonar.python.coverage.reportPaths=coverage.xml \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
