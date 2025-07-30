@@ -27,6 +27,7 @@ jobs:
       - name: Run tests and generate coverage report
         run: |
           pytest Deployment/test_sample.py --cov=Deployment/sample.py --cov-report=xml --cov-report=term
+          pytest --cov=. --cov-report=xml --cov-report=term
 
 
       - name: Download and run SonarScanner
