@@ -1,10 +1,10 @@
-name: SonarCloud Sample Scan
+name: SonarCloud Scan
 
 on:
-  workflow_dispatch:  # allows manual triggering
+  workflow_dispatch:  # Manual trigger
   push:
     branches:
-      - main
+      - main  # Change if your default branch is different
 
 jobs:
   sonarcloud:
@@ -37,6 +37,6 @@ jobs:
             -Dsonar.organization=Steve8695 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=Deployment \
-            -Dsonar.exclusions=**/test_*.py \
+            -Dsonar.exclusions=**/__pycache__/** \
             -Dsonar.python.coverage.reportPaths=coverage.xml \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
