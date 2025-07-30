@@ -1,7 +1,10 @@
-name: SonarCloud Scan for app.py
+name: SonarCloud Sample Scan
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # allows manual triggering
+  push:
+    branches:
+      - main  # adjust if your default branch is different
 
 jobs:
   sonarcloud:
@@ -14,18 +17,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.10'  # ensure TensorFlow compatibility
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov flask tensorflow
+          pip install pytest pytest-cov
 
       - name: Run tests and generate coverage report
         run: |
-          # Only run tests if you have them for app.py, adjust path if needed
-          pytest Deployment/ --cov=Deployment.app --cov-report=xml --cov-report=term
-
+          pytest Deployment/ --cov=Deployment.sample --cov-report=xml --cov-report=term
 
       - name: Download and run SonarScanner
         run: |
@@ -36,6 +37,6 @@ jobs:
             -Dsonar.organization=Steve8695 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=Deployment \
-            -Dsonar.exclusions=Deployment/app.py \
+            -Dsonar.inclusions=Deployment/sample.py \
             -Dsonar.python.coverage.reportPaths=coverage.xml \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
