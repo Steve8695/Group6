@@ -29,6 +29,7 @@ jobs:
           pytest --cov=Deployment --cov-report=xml --cov-report=term
 
       - name: Set up Java 17
+        id: setup-java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -38,6 +39,10 @@ jobs:
         run: |
           curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
           unzip sonar-scanner.zip
+
+          export JAVA_HOME=${{ steps.setup-java.outputs.path }}
+          export PATH="$JAVA_HOME/bin:$PATH"
+
           ./sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Group6 \
             -Dsonar.organization=Steve8695 \
