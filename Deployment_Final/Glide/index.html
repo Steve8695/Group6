@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GLIDE Yelp Image Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Yelp Image Generator</h1>
+        <form id="prompt-form">
+            <input type="text" name="prompt" id="prompt" placeholder="Enter prompt..." required>
+            <button type="submit">Generate</button>
+        </form>
+
+        <div id="loading" class="loader" style="display: none;"></div>
+
+        <div id="output">
+            <img id="generated-img" src="" alt="" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("prompt-form");
+        const loading = document.getElementById("loading");
+        const img = document.getElementById("generated-img");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            img.style.display = "none";
+            loading.style.display = "block";
+
+            const prompt = document.getElementById("prompt").value;
+            const formData = new FormData();
+            formData.append("prompt", prompt);
+
+            const res = await fetch("/generate", {
+                method: "POST",
+                body: formData
+            });
+
+            const filename = await res.text();
+
+            img.onload = () => {
+                loading.style.display = "none";
+                img.style.display = "block";
+            };
+
+            img.src = `/generated/${filename}`;
+        });
+    </script>
+</body>
+</html>

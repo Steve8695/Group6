@@ -1,0 +1,6 @@
+flask
+pillow
+numpy
+pyyaml
+torch
+streamlit

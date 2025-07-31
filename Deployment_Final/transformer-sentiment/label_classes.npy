@@ -1,0 +1,55 @@
+import numpy as np
+import pickle
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+# ===== Register Custom Positional Embedding Layer =====
+@tf.keras.utils.register_keras_serializable()
+class PositionalEmbedding(tf.keras.layers.Layer):
+    def __init__(self, max_len, d_model, **kwargs):
+        super().__init__(**kwargs)
+        self.max_len = max_len
+        self.d_model = d_model
+        self.embedding = tf.keras.layers.Embedding(input_dim=max_len, output_dim=d_model)
+
+    def call(self, x):
+        positions = tf.range(start=0, limit=tf.shape(x)[1], delta=1)
+        pos_encoded = self.embedding(positions)
+        return x + pos_encoded
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "max_len": self.max_len,
+            "d_model": self.d_model
+        })
+        return config
+
+# ===== Load Tokenizer =====
+def load_tokenizer(path="tokenizer.pkl"):
+    with open(path, "rb") as f:
+        tokenizer = pickle.load(f)
+    return tokenizer
+
+# ===== Load Label Classes =====
+def load_label_classes(path="label_classes (1).npy"):
+    return np.load(path, allow_pickle=True)
+
+# ===== Load Transformer Model =====
+def load_transformer_model(model_path="causal_transformer_model.keras"):
+    return load_model(
+        model_path,
+        custom_objects={"PositionalEmbedding": PositionalEmbedding},
+        compile=False
+    )
+
+# ===== Predict Sentiment =====
+def predict_sentiment(text, model, tokenizer, label_classes, max_len=128):
+    seq = tokenizer.texts_to_sequences([text])
+    padded = pad_sequences(seq, maxlen=max_len, padding="post")
+    preds = model.predict(padded)[0]
+    label_idx = np.argmax(preds)
+    label = label_classes[label_idx]
+    confidence = float(preds[label_idx])
+    return label, confidence

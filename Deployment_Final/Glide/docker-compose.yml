@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  glide_app:
+    build: .
+    container_name: glide-lora-cpu
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+      - TRANSFORMERS_NO_ADVISORY_WARNINGS=1
+    restart: unless-stopped

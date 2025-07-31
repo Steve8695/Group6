@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  gan_backend:
+    build: ./GAN_BACKEND
+    ports:
+      - "8000:8000"
+    restart: always
+  gan_ui:
+    build: ./GAN_UI
+    ports:
+      - "8501:8501"
+    depends_on:
+      - gan_backend
+    restart: always
+
+

@@ -1,0 +1,10 @@
+flask
+diffusers
+transformers
+peft
+torch
+torchvision
+torchaudio
+accelerate
+pillow
+scipy

@@ -1,0 +1,4 @@
+backend:
+  host: "gan_backend"
+  port: 8000
+

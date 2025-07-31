@@ -1,0 +1,10 @@
+
+flask:
+  host: "0.0.0.0"
+  port: 8000
+
+gan:
+  z_dim: 100
+  weights_file: "generator_full.pth"
+  output_image: "output.png"
+
